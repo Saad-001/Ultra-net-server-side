@@ -46,6 +46,24 @@ client.connect(err => {
       })
   })
 
+  app.patch('/updateStatus/:id', (req,res) =>{
+    console.log(req.body)
+    bookingCollection.updateOne({_id: ObjectID(req.params.id)},
+    {
+      $set: { status: req.body.status}
+    })
+    .then(result => {
+      console.log(result)
+    })
+  })
+
+  app.get('/deleteOrder/:id', (req, res) => {
+    bookingCollection.findOneAndDelete({_id: ObjectID(req.params.id)})
+    .then(result => {
+      console.log(result)
+    })
+  })
+
   app.get('/bookingList', (req, res) => {
     bookingCollection.find({email: req.query.email})
       .toArray((err, items) => {
